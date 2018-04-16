@@ -17,6 +17,9 @@ int output_nmea(struct transport_msg_t *msg, FILE *out_f, void *ctx)
    unsigned max_msg;
    uint8_t msg_structure[SIRF_MSG_SSB_MAX_MESSAGE_LEN];
    char str[1024];
+   int *msg_id_list = (int *)ctx;
+   int count = 0;
+   int i;
 
    if (!msg || msg->payload_length < 1)
       return 1;
@@ -31,6 +34,29 @@ int output_nmea(struct transport_msg_t *msg, FILE *out_f, void *ctx)
 
    if (err)
       return err;
+
+   if (msg_id_list != NULL)
+   {
+       count = msg_id_list[0];
+       for(i = 1; i < count +1; i++)
+       {
+           tSIRF_UINT32 msg_32 = (((SIRF_LC_SSB) & 0xFF) << 16) | (( (0) & 0xFF) << 8) |  ((msg_id_list[i]) & 0xFF);
+
+           if(msg_id == msg_32)
+                break;
+       }
+
+       if(i == count+1)
+       {
+           //printf("msg %d not processed\n", msg_id);
+            return 1;
+       }
+   }
+
+    /*
+   if(msg_id_list[i] == 2)
+    printf("msg2");
+    */
 
    str[0]='\0';
    str_size = sizeof(str);
@@ -53,7 +79,12 @@ int output_nmea(struct transport_msg_t *msg, FILE *out_f, void *ctx)
        }
        msg_n = SIRF_CODEC_OPTIONS_GET_MSG_NUMBER(options) + 1;
        max_msg = SIRF_CODEC_OPTIONS_GET_MAX_MSG_NUMBER(options);
-       fputs(str, out_f);
+       //mif(ctx == NULL)
+        fputs(str, out_f);
+       //else
+       //{
+        //printf("%d: %s", msg_id_list[i], str);
+       //}
    } while (msg_n < max_msg);
 
    return err;

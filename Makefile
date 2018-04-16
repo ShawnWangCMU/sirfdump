@@ -30,6 +30,7 @@ OBJS=	sirf_codec_ssb.o \
 	sirf_proto_nmea.o \
 	output_dump.o \
 	output_nmea.o \
+	output_csv.o \
 	output_rinex.o \
 	output_rinex_nav.o \
 	output_rtcm.o \
@@ -75,6 +76,9 @@ output_nmea.o: output_nmea.c sirfdump.h
 
 output_rinex.o: output_rinex.c sirfdump.h
 	$(CC) $(CFLAGS) -c output_rinex.c
+
+output_csv.o: output_csv.c sirfdump.h
+	$(CC) $(CFLAGS) -c output_csv.c
 
 output_rinex_nav.o: output_rinex_nav.c sirfdump.h
 	$(CC) $(CFLAGS) -c output_rinex_nav.c

@@ -9,6 +9,7 @@
 #define SPEED_OF_LIGHT 299792458.0
 #define GPS_EPOCH  315964800 /*  GPS epoch in Unix time */
 #define MAX_GPS_PRN  32
+#define MAX_ID_LIST 32
 
 struct transport_msg_t {
    uint8_t *payload;
@@ -27,6 +28,7 @@ typedef int (dumpf_t)(struct transport_msg_t *msg, FILE *out_f, void *user_ctx);
 
 int output_dump(struct transport_msg_t *msg, FILE *out_f, void *user_ctx);
 int output_nmea(struct transport_msg_t *msg, FILE *out_f, void *user_ctx);
+int output_csv(struct transport_msg_t *msg, FILE *out_f, void *user_ctx);
 
 void *new_rinex_ctx(int argc, char **argv, unsigned gsw230_byte_order);
 void free_rinex_ctx(void *ctx);

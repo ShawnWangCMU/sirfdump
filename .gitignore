@@ -10,3 +10,6 @@ wince/*.aps
 wince/*.ncb
 wince/*.user
 wince/Pocket*/
+
+.vscode
+.DS_Store

@@ -34,6 +34,7 @@ struct opts_t {
       OUTPUT_RINEX,
       OUTPUT_RINEX_NAV,
       OUTPUT_RTCM,
+      OUTPUT_CSV,
    } output_type;
    unsigned gsw230_byte_order;
 };
@@ -265,6 +266,48 @@ int process(struct ctx_t *ctx)
    return ctx->in.last_errno;
 }
 
+int* init_list(char* arg)
+{
+    char *msg_list = strtok(arg, ",");
+    int num = 0;
+    int count = 0;
+    int temp[MAX_ID_LIST];
+    int i = 0;
+    
+    // count message ids 
+    while(msg_list != NULL)
+    {
+        int num = atoi(msg_list);
+        msg_list = strtok(NULL, ",");
+        if(num < 1 || num > 255)
+        {
+            printf("msg %s not valid\n", msg_list);
+            continue;
+        }
+        temp[i++] = num;
+        count++;
+    }
+
+    if(count == 0)
+        return NULL;
+    
+    // set list
+    int *int_list = (int *) malloc((count+1) * sizeof(int));
+    int_list[0] = count;
+    for(i = 1; i < count+1; i++)
+    {
+        int_list[i] = temp[i-1];
+    }
+
+    // print list
+    printf("Processing only %d msg: ", int_list[0]);
+    for(i = 1; i < count+1; i++)
+        printf("%d, ", int_list[i]);
+    printf("\n");
+    
+    return int_list;
+}
+
 int main(int argc, char *argv[])
 {
    signed char c;
@@ -292,7 +335,7 @@ int main(int argc, char *argv[])
 #endif
 #endif
 
-   while ((c = getopt_long(argc, argv, "vh?f:F:o:2",longopts,NULL)) != -1) {
+   while ((c = getopt_long(argc, argv, "vh?f:F:o:m:2",longopts,NULL)) != -1) {
       switch (c) {
 	 case 'f':
 	    if (set_file(&ctx->opts.infile, optarg) != 0) {
@@ -309,7 +352,10 @@ int main(int argc, char *argv[])
 	 case 'o':
 	    if (strcmp(optarg, "nmea") == 0) {
 	       ctx->opts.output_type = OUTPUT_NMEA;
-	    }else if (strcmp(optarg, "dump") == 0) {
+	    }
+        else if (strcmp(optarg, "csv") == 0) {
+	       ctx->opts.output_type = OUTPUT_CSV;
+        }else if (strcmp(optarg, "dump") == 0) {
 	       ctx->opts.output_type = OUTPUT_DUMP;
 	    }else if (strcmp(optarg, "rinex") == 0) {
 	       ctx->opts.output_type = OUTPUT_RINEX;
@@ -322,6 +368,9 @@ int main(int argc, char *argv[])
 	       return 1;
 	    }
 	    break;
+       case 'm':
+          ctx->user_ctx = (void *)init_list(optarg);
+          break;
 	 case '2':
 	    ctx->opts.gsw230_byte_order = 1;
 	    break;
@@ -377,6 +426,9 @@ int main(int argc, char *argv[])
    switch (ctx->opts.output_type) {
       case OUTPUT_NMEA:
 	 ctx->dump_f = &output_nmea;
+	 break;
+     case OUTPUT_CSV:
+	 ctx->dump_f = &output_csv;
 	 break;
       case OUTPUT_RINEX:
 	 ctx->dump_f = &output_rinex;
