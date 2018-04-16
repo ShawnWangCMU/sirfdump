@@ -46,7 +46,7 @@ void GGAtoCSV(char* str, FILE* out_f)
         if(ns == 'S')
             lat = -lat;
         if(we == 'W')
-            lat = -lat;
+            lon = -lon;
         
         fprintf(out_f, "41,%.8f,%.8f\n", lat, lon);
     }
@@ -65,7 +65,7 @@ void MSG2toCSV(uint8_t* payload, unsigned int len, FILE* out_f)
     pos_z = (payload[9] << 24) | (payload[10] << 16) | (payload[11] << 8) | payload[12];
 
     //printf("%d, %d, %d\n", pos_x, pos_y, pos_z);
-    fprintf(out_f, "2,%f,%d,%d\n", pos_x, pos_y, pos_z);
+    fprintf(out_f, "2,%d,%d,%d\n", pos_x, pos_y, pos_z);
 }
 
 int output_csv(struct transport_msg_t *msg, FILE *out_f, void *ctx)

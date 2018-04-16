@@ -12,7 +12,8 @@ Usage:
 Options:
     -f, --infile                Input file, default: - (stdin)
     -F, --outfile               Output file, default: - (stdout)
-    -o, --outtype               Output type: dump / nmea / rinex / rinex-nav. default: nmea
+    -o, --outtype               Output type: dump / nmea / csv / rinex / rinex-nav. default: nmea
+    -m                          Only generate NMEA based on a list of SiRF messages. (e.g. 2,7,41)
     -h, --help                  Help
     -v, --version               Show version
 
