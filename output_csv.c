@@ -129,7 +129,7 @@ int output_csv(struct transport_msg_t *msg, FILE *out_f, void *ctx)
        
        if(msg_id == msg_41)
        {
-           GGAtoCSV(str, out_f);
+           //GGAtoCSV(str, out_f);
        }
    } while (msg_n < max_msg);
 

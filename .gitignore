@@ -2,6 +2,7 @@
 *.obj
 *.pdb
 *.suo
+*.txt
 sirfdump.exe
 *~
 /sirfdump

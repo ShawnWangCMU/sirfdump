@@ -1,11 +1,5 @@
 sirfdump - Sirf binary logger
 
-Download:
-
-    Windows build: http://gps.0xdc.ru/static/sirf/soft/sirfdump/sirfdump-win32-0.4.zip
-    Windows CE: http://gps.0xdc.ru/static/sirf/soft/sirfdump/sirfdump-wince-1.0.zip
-
-
 Usage:
     sirfdump [-h] [options]
 
