@@ -1,5 +1,5 @@
 CC?=gcc
-CFLAGS?= -Os -s -pipe
+CFLAGS?= -Os -pipe
 CFLAGS+= -DNDEBUG
 #CFLAGS=-W  -Wall -g -O0 -DVERBOSITY=LOG_RAW
 
